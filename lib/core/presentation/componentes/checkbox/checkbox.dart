@@ -14,7 +14,7 @@ class _CheckBoxWiodgetState extends State<CheckBoxWiodget> {
       children: [
         Checkbox(
             value: checked,
-            onChanged: (value) {
+            onChanged: (t) {
               setState(() {
                 checked = !checked;
               });

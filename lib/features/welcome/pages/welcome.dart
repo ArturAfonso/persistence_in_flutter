@@ -4,6 +4,9 @@ import 'package:persistence_in_flutter/core/presentation/componentes/brand/brand
 import 'package:persistence_in_flutter/core/presentation/componentes/brand/brand_title.dart';
 import 'package:persistence_in_flutter/core/presentation/componentes/buttons/defaultTextButton.dart';
 import 'package:persistence_in_flutter/core/presentation/componentes/checkbox/checkbox.dart';
+import 'package:persistence_in_flutter/features/products/pages/crud.dart';
+import 'package:persistence_in_flutter/features/welcome/data/datasources/welcome_datasource.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
   @override
@@ -20,12 +23,7 @@ class WelcomePage extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.5,
             ),
             _buildWelcomeText(),
-            Obx(() => Checkbox(
-                value: checado.value,
-                onChanged: (value) {
-                  checado.value = !checado.value;
-                })),
-            _buildBottonRow(),
+            _buildBottonRow(context),
           ],
         ),
       ),
@@ -40,15 +38,22 @@ class WelcomePage extends StatelessWidget {
     );
   }
 
-  _buildBottonRow() {
+  _buildBottonRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        //CheckBoxWiodget(),
-
+        CheckBoxWiodget(),
         DefaultTextButton(
           text: "Avançar",
-          onPress: () {},
+          onPress: () async {
+            print("avançar");
+            var sp = await SharedPreferences.getInstance();
+            var ds = WelcomeDataSourece(sharedPreferences: sp);
+
+            await ds.registerDontShowAgain(value: true);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ProductCrudPage()));
+          },
           textFontSize: 24,
         )
       ],
